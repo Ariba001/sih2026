@@ -1,0 +1,23 @@
+{
+  "paired_dies": 0,
+  "pre_dies": 377,
+  "post_dies": 533,
+  "tests_used_for_labels": 26,
+  "tests_excluded_high_fail": 67,
+  "post_fail_rate": 0.2682926829268293,
+  "wafers": 23,
+  "k=4.5": {
+    "wafers_compared": 23,
+    "spearman_rho": -0.1323974178376336,
+    "p_value": 0.5470361930335784,
+    "post_within_limit_dpat_outliers": 75,
+    "post_fails_also_dpat_outliers": 0.5174825174825175
+  },
+  "k=6.0": {
+    "wafers_compared": 23,
+    "spearman_rho": -0.07589729895802469,
+    "p_value": 0.7307040125902238,
+    "post_within_limit_dpat_outliers": 46,
+    "post_fails_also_dpat_outliers": 0.32867132867132864
+  }
+}

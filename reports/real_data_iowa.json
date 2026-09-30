@@ -1,0 +1,139 @@
+{
+  "mae": {
+    "physics": {
+      "overall_mae": 0.17466395728062023,
+      "overall_nmae_pct": 4.713218934633303,
+      "tail_nmae_pct": 11.583806203916264,
+      "per_param": {
+        "DeviceB_Power": {
+          "mae": 0.08502477850690517,
+          "nmae_pct": 11.057627099654354,
+          "tail_mae": 0.22852906360956168
+        },
+        "LED_Voltage": {
+          "mae": 0.21859446131638138,
+          "nmae_pct": 4.165815948761111,
+          "tail_mae": 0.4524613037830894
+        },
+        "Resistor_R": {
+          "mae": 0.007086072862320271,
+          "nmae_pct": 0.6726209982980915,
+          "tail_mae": 0.029686660956360633
+        }
+      }
+    },
+    "hybrid": {
+      "overall_mae": 0.13561844242055332,
+      "overall_nmae_pct": 3.2432464038995517,
+      "tail_nmae_pct": 10.754186490848637,
+      "per_param": {
+        "DeviceB_Power": {
+          "mae": 0.0391157139559272,
+          "nmae_pct": 5.032943481431564,
+          "tail_mae": 0.1247961656615261
+        },
+        "LED_Voltage": {
+          "mae": 0.17495709671651996,
+          "nmae_pct": 3.357314759423908,
+          "tail_mae": 0.5594553516473882
+        },
+        "Resistor_R": {
+          "mae": 0.004588614645494698,
+          "nmae_pct": 0.43697038215911493,
+          "tail_mae": 0.019982492577282795
+        }
+      }
+    },
+    "xgboost": {
+      "overall_mae": 0.18400077742033505,
+      "overall_nmae_pct": 4.231885503587995,
+      "tail_nmae_pct": 9.698651631768488,
+      "per_param": {
+        "DeviceB_Power": {
+          "mae": 0.04260017023021003,
+          "nmae_pct": 5.077290508360206,
+          "tail_mae": 0.04442654917936634
+        },
+        "LED_Voltage": {
+          "mae": 0.2377680096221033,
+          "nmae_pct": 4.50565800828815,
+          "tail_mae": 0.5714544003896798
+        },
+        "Resistor_R": {
+          "mae": 0.01605315149433405,
+          "nmae_pct": 1.5414433998540988,
+          "tail_mae": 0.0542029513090726
+        }
+      }
+    },
+    "ridge": {
+      "overall_mae": 0.13555042624854136,
+      "overall_nmae_pct": 3.086389216906491,
+      "tail_nmae_pct": 9.750795986740496,
+      "per_param": {
+        "DeviceB_Power": {
+          "mae": 0.024423990335977634,
+          "nmae_pct": 3.07029447375857,
+          "tail_mae": 0.04940236838530515
+        },
+        "LED_Voltage": {
+          "mae": 0.1760283709530767,
+          "nmae_pct": 3.358571847278101,
+          "tail_mae": 0.5921522088330268
+        },
+        "Resistor_R": {
+          "mae": 0.014594177083396428,
+          "nmae_pct": 1.4158494858768154,
+          "tail_mae": 0.031159252972112084
+        }
+      }
+    },
+    "naive": {
+      "overall_mae": 0.33864871951170605,
+      "overall_nmae_pct": 9.821572189703424,
+      "tail_nmae_pct": 15.847846087333531,
+      "per_param": {
+        "DeviceB_Power": {
+          "mae": 0.19143236087988164,
+          "nmae_pct": 25.121611982350828,
+          "tail_mae": 0.5378537820837788
+        },
+        "LED_Voltage": {
+          "mae": 0.41341894444444455,
+          "nmae_pct": 7.788004695938368,
+          "tail_mae": 0.18525555555555556
+        },
+        "Resistor_R": {
+          "mae": 0.04715615763546798,
+          "nmae_pct": 4.505737566520626,
+          "tail_mae": 0.12302165508909735
+        }
+      }
+    }
+  },
+  "power_law_n": {
+    "DeviceB_Power": 0.7347210676249525,
+    "LED_Voltage": 0.8446351254588982,
+    "Resistor_R": 0.48008655670646216
+  },
+  "units_per_param": {
+    "DeviceB_Power": 34,
+    "LED_Voltage": 180,
+    "Resistor_R": 29
+  },
+  "lots": [
+    "DeviceB_Power_150",
+    "DeviceB_Power_195",
+    "DeviceB_Power_237",
+    "LED_Voltage_110C_40mA",
+    "LED_Voltage_114C_30mA",
+    "LED_Voltage_130C_40mA",
+    "LED_Voltage_61C_30mA",
+    "LED_Voltage_77C_40mA",
+    "LED_Voltage_94C_30mA",
+    "Resistor_R_133",
+    "Resistor_R_173",
+    "Resistor_R_83"
+  ],
+  "markdown": "Source: Iowa State SMRD2 degradation data (CC BY 4.0, DOI 10.25380/iastate.14454765). Stress group = lot; horizon rescaled to 168 h; leave-one-lot-out. Units: DeviceB_Power: 34, LED_Voltage: 180, Resistor_R: 29; power-law n (all lots): DeviceB_Power=0.73, LED_Voltage=0.84, Resistor_R=0.48.\n\n| Model | DeviceB_Power MAE | LED_Voltage MAE | Resistor_R MAE | DeviceB_Power nMAE % | LED_Voltage nMAE % | Resistor_R nMAE % |\n|---|---|---|---|---|---|---|\n| physics | 0.08502 | 0.2186 | 0.007086 | 11.058 | 4.166 | 0.673 |\n| hybrid | 0.03912 | 0.175 | 0.004589 | 5.033 | 3.357 | 0.437 |\n| xgboost | 0.0426 | 0.2378 | 0.01605 | 5.077 | 4.506 | 1.541 |\n| ridge | 0.02442 | 0.176 | 0.01459 | 3.070 | 3.359 | 1.416 |\n| naive | 0.1914 | 0.4134 | 0.04716 | 25.122 | 7.788 | 4.506 |"
+}
