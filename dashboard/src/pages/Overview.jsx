@@ -3,6 +3,7 @@ import StatCard from '../components/StatCard'
 import Chart from '../components/Chart'
 import ResultsTable from '../components/ResultsTable'
 import DecisionGuide from '../components/DecisionGuide'
+import MetricsMatrix from '../components/MetricsMatrix'
 import './pages.css'
 
 function formatPct(v) {
@@ -20,15 +21,18 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
 
   if (!data) {
     return (
-      <div className="empty-block">
-        <p className="eyebrow">SIH 26170 · burn-in screening</p>
-        <h1 className="page-title">
-          <span className="brand-wordmark">BurnTestr</span>
-        </h1>
-        <p className="lede">
-          No screening results yet. Upload a burn-in CSV, or confirm the API on port 8000 is serving seed results.
-        </p>
-        <button type="button" className="btn primary" onClick={onUploadClick}>Upload CSV</button>
+      <div className="page">
+        <div className="empty-block">
+          <p className="eyebrow">SIH 26170 · burn-in screening</p>
+          <h1 className="page-title">
+            <span className="brand-wordmark">BurnTestr</span>
+          </h1>
+          <p className="lede">
+            No screening results yet. Upload a burn-in CSV, or confirm the API on port 8000 is serving seed results.
+          </p>
+          <button type="button" className="btn primary" onClick={onUploadClick}>Upload CSV</button>
+        </div>
+        <MetricsMatrix />
       </div>
     )
   }
@@ -92,6 +96,8 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
       </div>
 
       <DecisionGuide />
+
+      <MetricsMatrix />
 
       <div className="charts-grid">
         <section className="panel">

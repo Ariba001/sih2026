@@ -282,6 +282,219 @@
   padding: 0.85rem 1rem;
 }
 
+/* —— Screening performance / metrics matrix —— */
+.metrics-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.metrics-head h2 {
+  font-family: var(--font-brand);
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  color: var(--sih-navy);
+  margin-bottom: 0.3rem;
+}
+
+.metrics-lede {
+  color: var(--ink-soft);
+  max-width: 46rem;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.metrics-highlights {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--sih-saffron);
+}
+
+.metrics-hl {
+  padding: 1rem 1.15rem 1.1rem;
+  border-right: 1px solid var(--line-soft);
+}
+
+.metrics-hl:last-child {
+  border-right: 0;
+}
+
+.metrics-hl-label {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.metrics-hl-value {
+  font-family: var(--font-brand);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: var(--sih-navy);
+  line-height: 1;
+}
+
+.metrics-hl-detail {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.metrics-hl-note {
+  margin-top: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.metrics-tables {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.5rem;
+}
+
+.metrics-table-block h3 {
+  font-family: var(--font-brand);
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: var(--sih-navy);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.65rem;
+}
+
+.metrics-table-scroll {
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.metrics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.metrics-table th,
+.metrics-table td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--line-soft);
+  white-space: nowrap;
+}
+
+.metrics-table th {
+  background: var(--sih-navy-wash);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--line);
+}
+
+.metrics-table tbody tr.is-highlight td {
+  background: rgba(255, 153, 51, 0.08);
+  font-weight: 550;
+  color: var(--sih-navy);
+}
+
+.metrics-table tbody tr.is-highlight td:first-child {
+  font-weight: 650;
+}
+
+.metrics-module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.metrics-module {
+  padding: 0.95rem 1.1rem 1.05rem;
+  border-right: 1px solid var(--line-soft);
+}
+
+.metrics-module:last-child {
+  border-right: 0;
+}
+
+.metrics-module header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.metrics-module-name {
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--sih-navy);
+  letter-spacing: -0.02em;
+}
+
+.metrics-module-role {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.metrics-module dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem 0.75rem;
+}
+
+.metrics-module dt {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.metrics-module dd {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--sih-navy);
+}
+
+.metrics-footnote {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 960px) {
+  .metrics-highlights,
+  .metrics-tables,
+  .metrics-module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-hl,
+  .metrics-module {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .metrics-hl:last-child,
+  .metrics-module:last-child {
+    border-bottom: 0;
+  }
+}
+
 /* —— Charts & panels —— */
 .charts-grid {
   display: grid;
