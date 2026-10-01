@@ -5,6 +5,14 @@ import ResultsTable from '../components/ResultsTable'
 import DecisionGuide from '../components/DecisionGuide'
 import './pages.css'
 
+function formatPct(v) {
+  if (v == null || v === '') return null
+  if (typeof v === 'string' && v.includes('%')) return v
+  const n = Number(v)
+  if (!Number.isFinite(n)) return String(v)
+  return `${n.toFixed(n % 1 ? 1 : 0)}%`
+}
+
 export default function Overview({ data, loading, onRefresh, onUploadClick }) {
   if (loading && !data) {
     return <div className="loading-block">Loading BurnTestr results…</div>
@@ -13,10 +21,13 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
   if (!data) {
     return (
       <div className="empty-block">
+        <p className="eyebrow">SIH 26170 · burn-in screening</p>
         <h1 className="page-title">
           <span className="brand-wordmark">BurnTestr</span>
         </h1>
-        <p className="lede">No screening results yet. Upload a burn-in CSV, or confirm the API is serving seed results.</p>
+        <p className="lede">
+          No screening results yet. Upload a burn-in CSV, or confirm the API on port 8000 is serving seed results.
+        </p>
         <button type="button" className="btn primary" onClick={onUploadClick}>Upload CSV</button>
       </div>
     )
@@ -39,7 +50,7 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
           </h1>
           <p className="lede">
             Lot-relative anomaly detection and early-drift screening for aerospace burn-in.
-            Current results{meta?.source ? ` from ${meta.source}` : ''}.
+            {meta?.source ? ` Showing results from ${meta.source}.` : ''}
           </p>
           <div className="hero-actions">
             <button type="button" className="btn primary" onClick={onUploadClick}>Upload CSV</button>
@@ -63,19 +74,19 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
         <StatCard
           label="Accept"
           value={summary.accepted_count ?? summary.accept}
-          subValue={summary.accepted_pct}
+          subValue={formatPct(summary.accepted_pct)}
           decisionKey="ACCEPT"
         />
         <StatCard
           label="Review"
           value={summary.review_count ?? summary.review}
-          subValue={summary.review_pct}
+          subValue={formatPct(summary.review_pct)}
           decisionKey="REVIEW"
         />
         <StatCard
           label="Reject"
           value={summary.rejected_count ?? summary.reject}
-          subValue={summary.rejected_pct}
+          subValue={formatPct(summary.rejected_pct)}
           decisionKey="REJECT"
         />
       </div>

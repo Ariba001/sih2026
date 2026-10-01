@@ -15,7 +15,7 @@ export default function Results({ data, onBack }) {
 
   return (
     <div className="page">
-      <button type="button" className="btn ghost back" onClick={onBack}>Back to overview</button>
+      <button type="button" className="btn ghost back" onClick={onBack}>← Overview</button>
       <p className="eyebrow">Scored batch</p>
       <h1 className="page-title">
         <span className="brand-wordmark">BurnTestr</span>
@@ -23,7 +23,7 @@ export default function Results({ data, onBack }) {
       </h1>
       <p className="lede">
         Decisions from the latest upload{data.meta?.source ? ` (${data.meta.source})` : ''}.
-        Each row includes a plain-language description of why that call was made.
+        Each row explains why that call was made.
       </p>
 
       <div className="stats-grid">

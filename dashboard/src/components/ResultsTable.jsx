@@ -3,6 +3,18 @@ import { describeRow, normalizeDecision } from '../decisions'
 
 const PAGE = 25
 
+function pct(n) {
+  const v = Number(n)
+  if (!Number.isFinite(v)) return '—'
+  return `${Math.round(v * 100)}%`
+}
+
+function score(n) {
+  const v = Number(n)
+  if (!Number.isFinite(v)) return '—'
+  return v.toFixed(3)
+}
+
 export default function ResultsTable({ rows = [], title = 'Component decisions' }) {
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState('ALL')
@@ -35,8 +47,13 @@ export default function ResultsTable({ rows = [], title = 'Component decisions' 
             placeholder="Search component, lot, or description"
             value={q}
             onChange={(e) => { setQ(e.target.value); setPage(0) }}
+            aria-label="Search results"
           />
-          <select value={filter} onChange={(e) => { setFilter(e.target.value); setPage(0) }}>
+          <select
+            value={filter}
+            onChange={(e) => { setFilter(e.target.value); setPage(0) }}
+            aria-label="Filter by decision"
+          >
             <option value="ALL">All decisions</option>
             <option value="ACCEPT">Accept</option>
             <option value="REVIEW">Review</option>
@@ -64,14 +81,14 @@ export default function ResultsTable({ rows = [], title = 'Component decisions' 
               return (
                 <tr key={`${r.component_id || r.id}-${i}`}>
                   <td className="mono">{r.component_id || r.id}</td>
-                  <td>{r.lot_id}</td>
+                  <td className="mono">{r.lot_id}</td>
                   <td>
                     <span className={`badge badge-${decision.toLowerCase()}`}>{label}</span>
                   </td>
                   <td className="desc-cell">{describeRow(r)}</td>
-                  <td className="mono">{Number(r.score_a).toFixed(3)}</td>
-                  <td className="mono">{Number(r.score_b).toFixed(3)}</td>
-                  <td className="mono">{Math.round(Number(r.confidence || 0) * 100)}%</td>
+                  <td className="num-cell">{score(r.score_a)}</td>
+                  <td className="num-cell">{score(r.score_b)}</td>
+                  <td className="num-cell">{pct(r.confidence)}</td>
                 </tr>
               )
             })}

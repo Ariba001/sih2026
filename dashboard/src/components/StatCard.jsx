@@ -12,7 +12,7 @@ export default function StatCard({ label, value, subValue, tone = 'neutral', dec
       <div className="stat-label">{label}</div>
       <div className="stat-value">{value ?? '—'}</div>
       {subValue != null && subValue !== '' && <div className="stat-sub">{subValue}</div>}
-      {meta && <p className="stat-desc">{meta.short}. {meta.action}</p>}
+      {meta && <p className="stat-hint">{meta.short}</p>}
     </div>
   )
 }

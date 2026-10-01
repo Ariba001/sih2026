@@ -8,44 +8,47 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(1.2) blur(10px);
   border-bottom: 1px solid var(--line);
-  box-shadow: inset 0 -3px 0 var(--sih-saffron);
+  box-shadow: inset 0 -2px 0 var(--sih-saffron);
 }
 
 .topbar-inner {
-  max-width: 1120px;
+  max-width: var(--max);
   margin: 0 auto;
-  padding: 0.9rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.7rem;
   text-decoration: none;
   color: var(--ink);
+  flex-shrink: 0;
 }
 
 .brand-mark {
   display: block;
+  border-radius: 6px;
 }
 
 .brand-wordmark {
   font-family: var(--font-brand);
   font-weight: 700;
-  font-size: 1.4rem;
-  letter-spacing: -0.035em;
+  font-size: 1.45rem;
+  letter-spacing: -0.04em;
   line-height: 1;
   color: var(--sih-navy);
 }
 
 .nav {
   display: flex;
-  gap: 0.15rem;
+  gap: 0.1rem;
   margin-left: auto;
 }
 
@@ -53,11 +56,12 @@
   border: 0;
   background: transparent;
   color: var(--ink-soft);
-  padding: 0.45rem 0.75rem;
-  border-radius: 0;
+  padding: 0.5rem 0.85rem;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.92rem;
   border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
 }
 
 .nav-link:hover:not(:disabled) {
@@ -69,23 +73,22 @@
   color: var(--sih-navy);
   border-bottom-color: var(--sih-navy);
   font-weight: 600;
-  background: transparent;
 }
 
 .nav-link:disabled {
-  opacity: 0.35;
+  opacity: 0.32;
   cursor: not-allowed;
 }
 
 .status-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8rem;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--muted);
-  padding: 0.25rem 0;
-  border: 0;
-  background: transparent;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .dot {
@@ -93,6 +96,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--review);
+  flex-shrink: 0;
 }
 
 .dot.ok {
@@ -105,10 +109,10 @@
 
 .main {
   flex: 1;
-  max-width: 1120px;
+  max-width: var(--max);
   width: 100%;
   margin: 0 auto;
-  padding: 2rem 1.5rem 3.5rem;
+  padding: 2.25rem 1.5rem 4rem;
 }
 
 .banner {
@@ -116,12 +120,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 0.85rem 1rem;
-  margin-bottom: 1.25rem;
-  border: 1px solid #f0b4ad;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e8b4ad;
   border-left: 3px solid var(--reject);
   background: var(--reject-soft);
   color: #7a241c;
+  font-size: 0.92rem;
 }
 
 .banner button {
@@ -130,34 +135,42 @@
   color: inherit;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.85rem;
 }
 
 .footer {
   border-top: 1px solid var(--line);
-  padding: 1.1rem 1.5rem 1.5rem;
+  padding: 1.15rem 1.5rem 1.6rem;
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
   align-items: center;
   justify-content: center;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   flex-wrap: wrap;
   background: var(--surface);
 }
 
 .footer-mark {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--sih-navy);
 }
 
 @media (max-width: 720px) {
   .topbar-inner {
     flex-wrap: wrap;
+    gap: 0.75rem 1rem;
   }
 
   .nav {
     order: 3;
     width: 100%;
     margin-left: 0;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 0.35rem;
+  }
+
+  .status-chip {
+    margin-left: auto;
   }
 }

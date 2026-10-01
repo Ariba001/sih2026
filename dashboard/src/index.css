@@ -1,18 +1,20 @@
 :root {
-  /* SIH-inspired palette: deep navy + saffron, India green / alert red for decisions */
   --sih-navy: #0B3D6E;
   --sih-navy-deep: #072A4D;
+  --sih-navy-mid: #1A527A;
   --sih-navy-soft: #E8F0F7;
+  --sih-navy-wash: #F0F4F8;
   --sih-saffron: #FF9933;
   --sih-saffron-deep: #E65100;
   --sih-saffron-soft: #FFF4E5;
 
   --ink: #0B3D6E;
-  --ink-soft: #4A5D73;
+  --ink-soft: #3D5166;
   --muted: #6B7C90;
-  --paper: #F5F7FA;
+  --paper: #EEF2F6;
   --surface: #FFFFFF;
-  --line: #D5DEE8;
+  --line: #C9D4E0;
+  --line-soft: #E2E8F0;
 
   --accept: #138808;
   --accept-soft: #E8F5E9;
@@ -21,7 +23,8 @@
   --reject: #C62828;
   --reject-soft: #FFEBEE;
 
-  --radius: 6px;
+  --radius: 4px;
+  --max: 1180px;
   --font-brand: 'Space Grotesk', 'Avenir Next', sans-serif;
   --font-ui: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -44,8 +47,14 @@ body,
 body {
   font-family: var(--font-ui);
   color: var(--ink);
-  background: var(--paper);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 0% -10%, rgba(11, 61, 110, 0.07), transparent 55%),
+    radial-gradient(ellipse 70% 40% at 100% 0%, rgba(255, 153, 51, 0.06), transparent 50%),
+    linear-gradient(180deg, #F7F9FC 0%, var(--paper) 28%, #E8EEF4 100%);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 button,
@@ -57,8 +66,14 @@ select {
 code,
 .mono {
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 a {
+  color: var(--sih-navy-deep);
+}
+
+::selection {
+  background: rgba(255, 153, 51, 0.28);
   color: var(--sih-navy-deep);
 }

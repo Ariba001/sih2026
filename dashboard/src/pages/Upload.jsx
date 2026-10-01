@@ -21,8 +21,8 @@ export default function Upload({ onUpload, loading }) {
         Upload to <span className="brand-wordmark">BurnTestr</span>
       </h1>
       <p className="lede">
-        Drop a wide-schema burn-in CSV. Columns are validated, Modules A/B run, and the current
-        results view refreshes with Accept / Review / Reject plus per-component descriptions.
+        Drop a wide-schema burn-in CSV. Columns are validated, Modules A/B run, and results refresh
+        with Accept / Review / Reject plus per-component explanations.
       </p>
 
       <div
@@ -49,7 +49,15 @@ export default function Upload({ onUpload, loading }) {
           disabled={loading}
           onChange={(e) => takeFile(e.target.files?.[0])}
         />
-        <button type="button" className="btn primary" disabled={loading}>
+        <button
+          type="button"
+          className="btn primary"
+          disabled={loading}
+          onClick={(e) => {
+            e.stopPropagation()
+            inputRef.current?.click()
+          }}
+        >
           {loading ? 'Processing…' : 'Select CSV'}
         </button>
       </div>
