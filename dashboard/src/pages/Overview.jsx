@@ -2,6 +2,7 @@ import React from 'react'
 import StatCard from '../components/StatCard'
 import Chart from '../components/Chart'
 import ResultsTable from '../components/ResultsTable'
+import DecisionGuide from '../components/DecisionGuide'
 import './pages.css'
 
 export default function Overview({ data, loading, onRefresh, onUploadClick }) {
@@ -12,8 +13,10 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
   if (!data) {
     return (
       <div className="empty-block">
-        <h2 className="page-title">No results yet</h2>
-        <p>Upload a burn-in CSV to score components, or start the API so seed results can load.</p>
+        <h1 className="page-title">
+          <span className="brand-wordmark">BurnTestr</span>
+        </h1>
+        <p className="lede">No screening results yet. Upload a burn-in CSV, or confirm the API is serving seed results.</p>
         <button type="button" className="btn primary" onClick={onUploadClick}>Upload CSV</button>
       </div>
     )
@@ -28,36 +31,56 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
 
   return (
     <div className="page">
-      <div className="hero">
-        <div>
-          <p className="eyebrow">Current screening results</p>
+      <header className="hero">
+        <div className="hero-copy">
+          <p className="eyebrow">SIH 26170 · burn-in screening</p>
           <h1 className="hero-title">
             <span className="brand-wordmark">BurnTestr</span>
-            <span className="hero-rest"> overview</span>
           </h1>
           <p className="lede">
-            Lot-relative anomaly detection and drift screening for aerospace burn-in.
-            Showing persisted results{meta?.source ? ` from ${meta.source}` : ''}.
+            Lot-relative anomaly detection and early-drift screening for aerospace burn-in.
+            Current results{meta?.source ? ` from ${meta.source}` : ''}.
           </p>
           <div className="hero-actions">
             <button type="button" className="btn primary" onClick={onUploadClick}>Upload CSV</button>
             <button type="button" className="btn ghost" onClick={onRefresh}>Refresh</button>
           </div>
         </div>
-        <div className="hero-aside">
-          <div className="aside-label">Updated</div>
-          <div className="aside-value mono">{meta?.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}</div>
-          <div className="aside-label">Components</div>
-          <div className="aside-value mono">{summary.total_components ?? summary.total ?? 0}</div>
-        </div>
-      </div>
+        <dl className="hero-meta">
+          <div>
+            <dt>Updated</dt>
+            <dd className="mono">{meta?.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}</dd>
+          </div>
+          <div>
+            <dt>Components</dt>
+            <dd className="mono">{summary.total_components ?? summary.total ?? 0}</dd>
+          </div>
+        </dl>
+      </header>
 
       <div className="stats-grid">
-        <StatCard label="Total components" value={summary.total_components ?? summary.total} />
-        <StatCard label="Accepted" value={summary.accepted_count ?? summary.accept} subValue={summary.accepted_pct} tone="accept" />
-        <StatCard label="Review" value={summary.review_count ?? summary.review} subValue={summary.review_pct} tone="review" />
-        <StatCard label="Rejected" value={summary.rejected_count ?? summary.reject} subValue={summary.rejected_pct} tone="reject" />
+        <StatCard label="Total screened" value={summary.total_components ?? summary.total} />
+        <StatCard
+          label="Accept"
+          value={summary.accepted_count ?? summary.accept}
+          subValue={summary.accepted_pct}
+          decisionKey="ACCEPT"
+        />
+        <StatCard
+          label="Review"
+          value={summary.review_count ?? summary.review}
+          subValue={summary.review_pct}
+          decisionKey="REVIEW"
+        />
+        <StatCard
+          label="Reject"
+          value={summary.rejected_count ?? summary.reject}
+          subValue={summary.rejected_pct}
+          decisionKey="REJECT"
+        />
       </div>
+
+      <DecisionGuide />
 
       <div className="charts-grid">
         <section className="panel">
@@ -88,7 +111,7 @@ export default function Overview({ data, loading, onRefresh, onUploadClick }) {
 
       <ResultsTable
         rows={components?.length ? components : recent_scores || []}
-        title="Current results table"
+        title="Current results"
       />
     </div>
   )

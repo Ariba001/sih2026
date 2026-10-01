@@ -53,15 +53,15 @@ export default function App() {
       <header className="topbar">
         <div className="topbar-inner">
           <a className="brand" href="#overview" onClick={(e) => { e.preventDefault(); setPage('overview') }}>
-            <img src="/logo.svg" alt="" className="brand-mark" width="36" height="36" />
+            <img src="/logo.svg" alt="" className="brand-mark" width="34" height="34" />
             <span className="brand-wordmark">BurnTestr</span>
           </a>
-          <nav className="nav">
+          <nav className="nav" aria-label="Primary">
             <button type="button" className={page === 'overview' ? 'nav-link active' : 'nav-link'} onClick={() => setPage('overview')}>
               Overview
             </button>
             <button type="button" className={page === 'upload' ? 'nav-link active' : 'nav-link'} onClick={() => setPage('upload')}>
-              Upload CSV
+              Upload
             </button>
             <button
               type="button"
@@ -74,7 +74,7 @@ export default function App() {
           </nav>
           <div className="status-chip" title={health?.status || 'unknown'}>
             <span className={`dot ${health?.model_loaded ? 'ok' : 'warn'}`} />
-            {health?.model_loaded ? 'Model ready' : 'API / model'}
+            {health?.model_loaded ? 'API ready' : 'API offline'}
           </div>
         </div>
       </header>
@@ -105,7 +105,7 @@ export default function App() {
 
       <footer className="footer">
         <span className="brand-wordmark footer-mark">BurnTestr</span>
-        <span>MIL-STD-883 / ESCC burn-in screening · SIH 26170</span>
+        <span>MIL-STD-883 / ESCC burn-in screening · Smart India Hackathon 26170</span>
       </footer>
     </div>
   )

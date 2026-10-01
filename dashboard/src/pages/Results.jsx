@@ -1,6 +1,8 @@
 import React from 'react'
 import Chart from '../components/Chart'
 import ResultsTable from '../components/ResultsTable'
+import DecisionGuide from '../components/DecisionGuide'
+import StatCard from '../components/StatCard'
 import './pages.css'
 
 export default function Results({ data, onBack }) {
@@ -13,21 +15,25 @@ export default function Results({ data, onBack }) {
 
   return (
     <div className="page">
-      <button type="button" className="btn ghost back" onClick={onBack}>← Back to overview</button>
+      <button type="button" className="btn ghost back" onClick={onBack}>Back to overview</button>
       <p className="eyebrow">Scored batch</p>
       <h1 className="page-title">
-        <span className="brand-wordmark">BurnTestr</span> results
+        <span className="brand-wordmark">BurnTestr</span>
+        <span className="title-rest"> results</span>
       </h1>
       <p className="lede">
         Decisions from the latest upload{data.meta?.source ? ` (${data.meta.source})` : ''}.
+        Each row includes a plain-language description of why that call was made.
       </p>
 
       <div className="stats-grid">
-        <div className="stat-card"><div className="stat-label">Total</div><div className="stat-value">{summary.total ?? summary.total_components}</div></div>
-        <div className="stat-card tone-accept"><div className="stat-label">Accept</div><div className="stat-value">{summary.accept ?? summary.accepted_count}</div></div>
-        <div className="stat-card tone-review"><div className="stat-label">Review</div><div className="stat-value">{summary.review ?? summary.review_count}</div></div>
-        <div className="stat-card tone-reject"><div className="stat-label">Reject</div><div className="stat-value">{summary.reject ?? summary.rejected_count}</div></div>
+        <StatCard label="Total" value={summary.total ?? summary.total_components} />
+        <StatCard label="Accept" value={summary.accept ?? summary.accepted_count} decisionKey="ACCEPT" />
+        <StatCard label="Review" value={summary.review ?? summary.review_count} decisionKey="REVIEW" />
+        <StatCard label="Reject" value={summary.reject ?? summary.rejected_count} decisionKey="REJECT" />
       </div>
+
+      <DecisionGuide compact />
 
       <div className="charts-grid">
         <section className="panel">

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { describeRow, normalizeDecision } from '../decisions'
 
 const PAGE = 25
 
@@ -10,12 +11,13 @@ export default function ResultsTable({ rows = [], title = 'Component decisions' 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase()
     return rows.filter((r) => {
-      const decision = String(r.decision || '').toUpperCase()
+      const decision = normalizeDecision(r.decision)
       if (filter !== 'ALL' && decision !== filter) return false
       if (!needle) return true
       return (
         String(r.component_id || r.id || '').toLowerCase().includes(needle) ||
-        String(r.lot_id || '').toLowerCase().includes(needle)
+        String(r.lot_id || '').toLowerCase().includes(needle) ||
+        describeRow(r).toLowerCase().includes(needle)
       )
     })
   }, [rows, q, filter])
@@ -30,7 +32,7 @@ export default function ResultsTable({ rows = [], title = 'Component decisions' 
         <div className="table-controls">
           <input
             type="search"
-            placeholder="Filter component or lot"
+            placeholder="Search component, lot, or description"
             value={q}
             onChange={(e) => { setQ(e.target.value); setPage(0) }}
           />
@@ -49,19 +51,24 @@ export default function ResultsTable({ rows = [], title = 'Component decisions' 
               <th>Component</th>
               <th>Lot</th>
               <th>Decision</th>
-              <th>A score</th>
-              <th>B score</th>
-              <th>Confidence</th>
+              <th>Description</th>
+              <th>A</th>
+              <th>B</th>
+              <th>Conf.</th>
             </tr>
           </thead>
           <tbody>
             {slice.map((r, i) => {
-              const decision = String(r.decision || '').toLowerCase()
+              const decision = normalizeDecision(r.decision)
+              const label = decision.charAt(0) + decision.slice(1).toLowerCase()
               return (
                 <tr key={`${r.component_id || r.id}-${i}`}>
                   <td className="mono">{r.component_id || r.id}</td>
                   <td>{r.lot_id}</td>
-                  <td><span className={`badge badge-${decision}`}>{r.decision}</span></td>
+                  <td>
+                    <span className={`badge badge-${decision.toLowerCase()}`}>{label}</span>
+                  </td>
+                  <td className="desc-cell">{describeRow(r)}</td>
                   <td className="mono">{Number(r.score_a).toFixed(3)}</td>
                   <td className="mono">{Number(r.score_b).toFixed(3)}</td>
                   <td className="mono">{Math.round(Number(r.confidence || 0) * 100)}%</td>
@@ -70,7 +77,7 @@ export default function ResultsTable({ rows = [], title = 'Component decisions' 
             })}
             {!slice.length && (
               <tr>
-                <td colSpan={6} className="empty-row">No matching components</td>
+                <td colSpan={7} className="empty-row">No matching components</td>
               </tr>
             )}
           </tbody>

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="BurnTestr">
-  <rect width="64" height="64" rx="14" fill="#0F2744"/>
-  <rect x="14" y="16" width="36" height="32" rx="4" stroke="#7DD3C7" stroke-width="2.5"/>
-  <path d="M22 28h6M22 32h10M22 36h8" stroke="#E8EEF5" stroke-width="2" stroke-linecap="round"/>
-  <path d="M36 40c2.5-6 5-10 8-14 2.2 4 4.2 8 6 14" stroke="#F0A202" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="42" cy="24" r="2.2" fill="#F0A202"/>
-  <path d="M18 12v4M32 12v4M46 12v4M18 48v4M32 48v4M46 48v4" stroke="#7DD3C7" stroke-width="2" stroke-linecap="round"/>
+  <rect width="64" height="64" rx="8" fill="#0B3D6E"/>
+  <rect x="14" y="16" width="36" height="32" rx="3" stroke="#FF9933" stroke-width="2.5"/>
+  <path d="M22 28h6M22 32h10M22 36h8" stroke="#E8F0F7" stroke-width="2" stroke-linecap="round"/>
+  <path d="M36 40c2.5-6 5-10 8-14 2.2 4 4.2 8 6 14" stroke="#FF9933" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="42" cy="24" r="2.2" fill="#FF9933"/>
+  <path d="M18 12v4M32 12v4M46 12v4M18 48v4M32 48v4M46 48v4" stroke="#8FB4D9" stroke-width="2" stroke-linecap="round"/>
 </svg>

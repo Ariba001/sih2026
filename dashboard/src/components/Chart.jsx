@@ -13,13 +13,23 @@ import {
   Cell,
 } from 'recharts'
 
+/** SIH-aligned decision colours */
 const COLORS = {
-  Accept: '#1b7f5a',
-  ACCEPT: '#1b7f5a',
-  Review: '#c47a00',
-  REVIEW: '#c47a00',
-  Reject: '#c0392b',
-  REJECT: '#c0392b',
+  Accept: '#138808',
+  ACCEPT: '#138808',
+  Review: '#E65100',
+  REVIEW: '#E65100',
+  Reject: '#C62828',
+  REJECT: '#C62828',
+}
+
+const tooltipStyle = {
+  background: '#fff',
+  border: '1px solid #D5DEE8',
+  borderRadius: 4,
+  fontFamily: 'IBM Plex Sans, sans-serif',
+  fontSize: 12,
+  boxShadow: 'none',
 }
 
 export default function Chart({ type = 'bar', data = [] }) {
@@ -37,16 +47,18 @@ export default function Chart({ type = 'bar', data = [] }) {
             nameKey="name"
             cx="50%"
             cy="50%"
-            innerRadius={55}
-            outerRadius={95}
-            paddingAngle={2}
+            innerRadius={58}
+            outerRadius={96}
+            paddingAngle={1}
+            stroke="#fff"
+            strokeWidth={2}
             label={({ name, value }) => `${name} ${value}`}
           >
             {data.map((entry) => (
-              <Cell key={entry.name} fill={COLORS[entry.name] || '#0d9488'} />
+              <Cell key={entry.name} fill={COLORS[entry.name] || '#0B3D6E'} />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip contentStyle={tooltipStyle} />
         </PieChart>
       </ResponsiveContainer>
     )
@@ -55,18 +67,11 @@ export default function Chart({ type = 'bar', data = [] }) {
   return (
     <ResponsiveContainer width="100%" height={280}>
       <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#d5dee8" />
-        <XAxis dataKey="lot_id" tick={{ fontSize: 11, fill: '#3a4f6a' }} />
-        <YAxis tick={{ fontSize: 11, fill: '#3a4f6a' }} />
-        <Tooltip
-          contentStyle={{
-            background: '#fff',
-            border: '1px solid #d5dee8',
-            borderRadius: 8,
-            fontFamily: 'IBM Plex Sans, sans-serif',
-          }}
-        />
-        <Legend />
+        <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
+        <XAxis dataKey="lot_id" tick={{ fontSize: 11, fill: '#4A5D73' }} axisLine={{ stroke: '#D5DEE8' }} />
+        <YAxis tick={{ fontSize: 11, fill: '#4A5D73' }} axisLine={false} tickLine={false} />
+        <Tooltip contentStyle={tooltipStyle} />
+        <Legend iconType="square" wrapperStyle={{ fontSize: 12 }} />
         <Bar dataKey="accepted" stackId="a" fill={COLORS.Accept} name="Accept" />
         <Bar dataKey="review" stackId="a" fill={COLORS.Review} name="Review" />
         <Bar dataKey="rejected" stackId="a" fill={COLORS.Reject} name="Reject" />

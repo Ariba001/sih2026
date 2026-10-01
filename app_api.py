@@ -15,6 +15,7 @@ from src.data import validate
 from src.llm_reports import LLMReportGenerator
 from src.results_store import (
     build_payload_from_comp,
+    enrich_payload,
     ensure_seed_results,
     load_current_results,
     save_current_results,
@@ -280,7 +281,7 @@ async def get_dashboard():
     """Current / existing BurnTestr results for charts and tables."""
     try:
         data = load_current_results() or ensure_seed_results(system)
-        return data
+        return enrich_payload(data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Dashboard error: {e}") from e
 

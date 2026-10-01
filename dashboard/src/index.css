@@ -1,24 +1,27 @@
 :root {
-  /* BurnTestr — light instrumentation lab */
-  --ink: #0f2744;
-  --ink-soft: #3a4f6a;
-  --muted: #6b7c90;
-  --paper: #f3f6f9;
-  --surface: #ffffff;
-  --line: #d5dee8;
-  --teal: #0d9488;
-  --teal-deep: #0f766e;
-  --teal-soft: #e6f7f5;
-  --amber: #c47a00;
-  --amber-soft: #fff4e0;
-  --accept: #1b7f5a;
-  --accept-soft: #e6f5ef;
-  --review: #b86e00;
-  --review-soft: #fff3df;
-  --reject: #c0392b;
-  --reject-soft: #fdecea;
-  --shadow: 0 10px 30px rgba(15, 39, 68, 0.06);
-  --radius: 12px;
+  /* SIH-inspired palette: deep navy + saffron, India green / alert red for decisions */
+  --sih-navy: #0B3D6E;
+  --sih-navy-deep: #072A4D;
+  --sih-navy-soft: #E8F0F7;
+  --sih-saffron: #FF9933;
+  --sih-saffron-deep: #E65100;
+  --sih-saffron-soft: #FFF4E5;
+
+  --ink: #0B3D6E;
+  --ink-soft: #4A5D73;
+  --muted: #6B7C90;
+  --paper: #F5F7FA;
+  --surface: #FFFFFF;
+  --line: #D5DEE8;
+
+  --accept: #138808;
+  --accept-soft: #E8F5E9;
+  --review: #E65100;
+  --review-soft: #FFF3E0;
+  --reject: #C62828;
+  --reject-soft: #FFEBEE;
+
+  --radius: 6px;
   --font-brand: 'Space Grotesk', 'Avenir Next', sans-serif;
   --font-ui: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -41,16 +44,13 @@ body,
 body {
   font-family: var(--font-ui);
   color: var(--ink);
-  background:
-    radial-gradient(1200px 500px at 10% -10%, #d9efe9 0%, transparent 55%),
-    radial-gradient(900px 420px at 100% 0%, #e8eef6 0%, transparent 50%),
-    linear-gradient(180deg, #eef3f7 0%, var(--paper) 40%, #e9eef4 100%);
-  background-attachment: fixed;
+  background: var(--paper);
   -webkit-font-smoothing: antialiased;
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -60,5 +60,5 @@ code,
 }
 
 a {
-  color: var(--teal-deep);
+  color: var(--sih-navy-deep);
 }

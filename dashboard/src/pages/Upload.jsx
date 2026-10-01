@@ -18,11 +18,11 @@ export default function Upload({ onUpload, loading }) {
     <div className="page">
       <p className="eyebrow">Score new lots</p>
       <h1 className="page-title">
-        Upload data to <span className="brand-wordmark">BurnTestr</span>
+        Upload to <span className="brand-wordmark">BurnTestr</span>
       </h1>
       <p className="lede">
-        Drop a wide-schema burn-in CSV. BurnTestr validates columns, runs Modules A/B screening,
-        and refreshes the current results dashboard.
+        Drop a wide-schema burn-in CSV. Columns are validated, Modules A/B run, and the current
+        results view refreshes with Accept / Review / Reject plus per-component descriptions.
       </p>
 
       <div
@@ -39,8 +39,8 @@ export default function Upload({ onUpload, loading }) {
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.click()}
       >
-        <div className="drop-title">{loading ? 'Scoring in BurnTestr…' : 'Drop CSV here'}</div>
-        <p>or click to browse · Lot_ID, Component_ID, Param_Name, Value_0h/24h/96h/168h</p>
+        <div className="drop-title">{loading ? 'Scoring…' : 'Drop CSV here'}</div>
+        <p>or click to browse · Lot_ID, Component_ID, Param_Name, Value_0h / 24h / 96h / 168h</p>
         <input
           ref={inputRef}
           type="file"
