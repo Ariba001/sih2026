@@ -59,8 +59,15 @@ class BurnInSystem:
         comp["Decision"] = decide(comp, self.cfg.review_frac)
         comp["ModuleA_Reject"] = comp["rule_fail"] | (comp["A_score"] >= self.tau_a)
 
-        # Attach Weibull survival probabilities
-        comp["survival_prob"] = df.apply(lambda r: self.weibull.predict_survival_prob(r), axis=1)
+        # Attach Weibull survival probabilities (component-level; min across params)
+        row_probs = df.apply(lambda r: self.weibull.predict_survival_prob(r), axis=1)
+        surv = (
+            pd.DataFrame({"Lot_ID": df["Lot_ID"], "Component_ID": df["Component_ID"], "survival_prob": row_probs})
+            .groupby(["Lot_ID", "Component_ID"], as_index=False)["survival_prob"]
+            .min()
+        )
+        comp = comp.merge(surv, on=["Lot_ID", "Component_ID"], how="left")
+        comp["survival_prob"] = comp["survival_prob"].fillna(0.99)
         comp["mission_risk"] = comp["survival_prob"].apply(
             lambda p: "HIGH" if p < 0.99 else ("MEDIUM" if p < 0.999 else "LOW")
         )

@@ -1,0 +1,17 @@
+.venv
+venv
+__pycache__
+*.pyc
+.git
+.streamlit
+dashboard/node_modules
+dashboard/dist
+cloudflared.exe
+*.md
+!README.md
+!README_SPACE.md
+reports/current_results.json
+upload_out.json
+.pytest_cache
+.vscode
+.idea

@@ -1,3 +1,7 @@
+# Slim deps for local / Streamlit Community Cloud demos (CPU).
+# Production FastAPI host uses requirements-api.txt (+ Dockerfile).
+# Full stack extras live in requirements-full.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
 numpy
 pandas
 scipy
@@ -9,14 +13,10 @@ plotly
 matplotlib
 seaborn
 streamlit
-pytest
 pyod
-pysal
 lifelines
-anthropic
+torch
 fastapi
-uvicorn
+uvicorn[standard]
+python-multipart
 pydantic
-sqlalchemy
-psycopg2-binary
-redis
