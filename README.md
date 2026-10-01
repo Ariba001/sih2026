@@ -1,6 +1,33 @@
-# AI-Driven Anomaly Detection in Component Burn-In & Screening
+# BurnTestr
 
-**Production-ready aerospace component qualification system** for MIL-STD-883 / ESCC compliance with full auditability, QA-inspector-friendly interfaces, and 15-year mission-life safety predictions.
+**AI-driven anomaly detection in component burn-in & screening** — production-ready aerospace qualification for MIL-STD-883 / ESCC with full auditability, QA-inspector-friendly interfaces, and 15-year mission-life safety predictions.
+
+## BurnTestr web dashboard (React)
+
+Light-themed **BurnTestr** UI for current results + CSV upload scoring (charts + tables). Lives in `dashboard/`.
+
+```bash
+# Terminal 1 — API (from repo root)
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+# source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app_api:app --host 0.0.0.0 --port 8000
+
+# Terminal 2 — dashboard
+cd dashboard
+npm install
+npm run dev
+# open http://localhost:5173
+```
+
+API endpoints used by the UI:
+- `GET /health` / `GET /api/health` — model status
+- `GET /api/results` (alias `GET /api/dashboard`) — current / persisted results
+- `POST /api/upload` — upload CSV → score → save as current results
+- `POST /score` — JSON scoring API
 
 ## Overview
 

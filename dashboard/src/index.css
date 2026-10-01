@@ -1,0 +1,64 @@
+:root {
+  /* BurnTestr — light instrumentation lab */
+  --ink: #0f2744;
+  --ink-soft: #3a4f6a;
+  --muted: #6b7c90;
+  --paper: #f3f6f9;
+  --surface: #ffffff;
+  --line: #d5dee8;
+  --teal: #0d9488;
+  --teal-deep: #0f766e;
+  --teal-soft: #e6f7f5;
+  --amber: #c47a00;
+  --amber-soft: #fff4e0;
+  --accept: #1b7f5a;
+  --accept-soft: #e6f5ef;
+  --review: #b86e00;
+  --review-soft: #fff3df;
+  --reject: #c0392b;
+  --reject-soft: #fdecea;
+  --shadow: 0 10px 30px rgba(15, 39, 68, 0.06);
+  --radius: 12px;
+  --font-brand: 'Space Grotesk', 'Avenir Next', sans-serif;
+  --font-ui: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, #d9efe9 0%, transparent 55%),
+    radial-gradient(900px 420px at 100% 0%, #e8eef6 0%, transparent 50%),
+    linear-gradient(180deg, #eef3f7 0%, var(--paper) 40%, #e9eef4 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+code,
+.mono {
+  font-family: var(--font-mono);
+}
+
+a {
+  color: var(--teal-deep);
+}

@@ -1,0 +1,185 @@
+"""Helpers to build / persist BurnTestr dashboard result payloads."""
+from __future__ import annotations
+
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Optional
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+RESULTS_JSON = ROOT / "reports" / "current_results.json"
+DECISIONS_CSV = ROOT / "reports" / "test_decisions.csv"
+SYNTHETIC_CSV = ROOT / "data" / "burnin_synthetic.csv"
+
+
+def _pct(n: int, total: int) -> str:
+    if total <= 0:
+        return "0%"
+    return f"{round(100.0 * n / total)}%"
+
+
+def _safe_float(val, default: float = 0.0) -> float:
+    try:
+        if pd.isna(val):
+            return default
+        return float(val)
+    except Exception:
+        return default
+
+
+def _confidence(a: float, b: float) -> float:
+    denom = max(abs(a), abs(b), 1.0)
+    return float(max(0.0, min(1.0, 1.0 - abs(a - b) / denom)))
+
+
+def build_payload_from_comp(
+    comp: pd.DataFrame,
+    source_df: Optional[pd.DataFrame] = None,
+    *,
+    source: str = "scored",
+) -> dict[str, Any]:
+    """Normalize a component-level decisions frame into the dashboard JSON shape."""
+    if "Decision" not in comp.columns:
+        raise ValueError("Component frame missing Decision column")
+
+    decisions = comp["Decision"].astype(str).str.upper()
+    total = int(len(comp))
+    accepted = int((decisions == "ACCEPT").sum())
+    reviewed = int((decisions == "REVIEW").sum())
+    rejected = int((decisions == "REJECT").sum())
+
+    # Decisions by lot
+    decisions_by_lot = []
+    if "Lot_ID" in comp.columns:
+        for lot_id, g in comp.groupby("Lot_ID", sort=True):
+            d = g["Decision"].astype(str).str.upper()
+            decisions_by_lot.append({
+                "lot_id": str(lot_id),
+                "accepted": int((d == "ACCEPT").sum()),
+                "review": int((d == "REVIEW").sum()),
+                "rejected": int((d == "REJECT").sum()),
+            })
+
+    # Parameter stats from source measurements when available
+    parameter_stats = []
+    if source_df is not None and "Param_Name" in source_df.columns and "Value_168h" in source_df.columns:
+        for param, g in source_df.groupby("Param_Name", sort=True):
+            parameter_stats.append({
+                "parameter": str(param),
+                "mean": _safe_float(g["Value_168h"].mean()),
+                "min": _safe_float(g["Value_168h"].min()),
+                "max": _safe_float(g["Value_168h"].max()),
+            })
+
+    components = []
+    recent_scores = []
+    for _, row in comp.iterrows():
+        a = _safe_float(row.get("A_score", 0.0))
+        b = _safe_float(row.get("B_score", 0.0))
+        decision = str(row.get("Decision", "ACCEPT")).upper()
+        conf = _confidence(a, b)
+        item = {
+            "id": str(row.get("Component_ID", "")),
+            "component_id": str(row.get("Component_ID", "")),
+            "lot_id": str(row.get("Lot_ID", "")),
+            "decision": decision.title() if decision in {"ACCEPT", "REVIEW", "REJECT"} else decision,
+            "score_a": a,
+            "score_b": b,
+            "confidence": conf,
+            "survival_prob": _safe_float(row.get("survival_prob", row.get("S_proba", 0.99)), 0.99),
+            "mission_risk": str(row.get("mission_risk", "LOW")),
+            "reason_codes": str(row.get("Reason_Codes", "") or ""),
+        }
+        components.append(item)
+        recent_scores.append({
+            "component_id": item["component_id"],
+            "lot_id": item["lot_id"],
+            "decision": item["decision"],
+            "score_a": a,
+            "score_b": b,
+            "confidence": conf,
+        })
+
+    # Prefer flagged components first in "recent"
+    order = {"Reject": 0, "Review": 1, "Accept": 2}
+    recent_scores.sort(key=lambda r: (order.get(r["decision"], 9), -r["score_a"]))
+
+    return {
+        "meta": {
+            "product": "BurnTestr",
+            "source": source,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "component_count": total,
+        },
+        "summary": {
+            "total_components": total,
+            "accepted_count": accepted,
+            "accepted_pct": _pct(accepted, total),
+            "review_count": reviewed,
+            "review_pct": _pct(reviewed, total),
+            "rejected_count": rejected,
+            "rejected_pct": _pct(rejected, total),
+            # Upload response aliases
+            "total": total,
+            "accept": accepted,
+            "review": reviewed,
+            "reject": rejected,
+        },
+        "decisions_by_lot": decisions_by_lot,
+        "parameter_stats": parameter_stats,
+        "parameter_insights": parameter_stats,
+        "recent_scores": recent_scores[:50],
+        "components": components,
+    }
+
+
+def load_current_results() -> Optional[dict[str, Any]]:
+    if RESULTS_JSON.exists():
+        with open(RESULTS_JSON, encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+
+def save_current_results(payload: dict[str, Any]) -> None:
+    RESULTS_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(RESULTS_JSON, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+
+
+def load_from_decisions_csv(path: Path = DECISIONS_CSV) -> Optional[dict[str, Any]]:
+    if not path.exists():
+        return None
+    df = pd.read_csv(path)
+    return build_payload_from_comp(df, source="test_decisions.csv")
+
+
+def ensure_seed_results(system=None, max_lots: int = 4) -> dict[str, Any]:
+    """Return persisted results, or seed from CSV / a small live score run."""
+    existing = load_current_results()
+    if existing:
+        return existing
+
+    seeded = load_from_decisions_csv()
+    if seeded:
+        save_current_results(seeded)
+        return seeded
+
+    if system is not None and SYNTHETIC_CSV.exists():
+        from src.data import load_csv
+
+        df = load_csv(SYNTHETIC_CSV)
+        lots = sorted(df["Lot_ID"].unique())[:max_lots]
+        sample = df[df["Lot_ID"].isin(lots)].copy()
+        _, comp = system.score(sample, explain=False)
+        payload = build_payload_from_comp(comp, sample, source="synthetic_sample")
+        save_current_results(payload)
+        return payload
+
+    # Empty shell so UI still renders
+    empty = build_payload_from_comp(
+        pd.DataFrame(columns=["Lot_ID", "Component_ID", "Decision", "A_score", "B_score"]),
+        source="empty",
+    )
+    return empty
