@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: burntestr-api
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements-api-slim.txt
+    startCommand: uvicorn app_api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: BURNTESTR_DISABLE_TORCH
+        value: "1"
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: MKL_NUM_THREADS
+        value: "1"
+      - key: CORS_ORIGINS
+        sync: false

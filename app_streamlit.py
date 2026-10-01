@@ -38,6 +38,15 @@ def load_system():
     return None
 
 
+def score_and_sync(system, df, *, source: str = "streamlit", explain: bool = False):
+    """Score with the same BurnInSystem FastAPI uses; sync results for Vite dashboard."""
+    from src.results_store import persist_scored_results
+
+    rows, comp = system.score(df, explain=explain)
+    persist_scored_results(comp, df, source=source)
+    return rows, comp
+
+
 # Sidebar navigation
 st.sidebar.title("🔥 Burn-In QA Dashboard")
 page = st.sidebar.radio(
@@ -65,8 +74,8 @@ if page == "Lot Overview":
             df = load_csv(uploaded_file)
             df = validate(df)
 
-            # Score
-            rows, comp = system.score(df, explain=False)
+            # Score (same pipeline as FastAPI; writes reports/current_results.json)
+            rows, comp = score_and_sync(system, df, source="streamlit:lot_overview")
 
             # Extract lot_id (should be single lot for this page)
             lot_ids = df["Lot_ID"].unique()
@@ -133,7 +142,7 @@ elif page == "Component Detail":
         try:
             df = load_csv(uploaded_file)
             df = validate(df)
-            rows, comp = system.score(df, explain=False)
+            rows, comp = score_and_sync(system, df, source="streamlit:component_detail")
 
             # Component selector
             comp_id = st.selectbox("Select Component ID", comp["Component_ID"].unique())
@@ -193,7 +202,7 @@ elif page == "Spatial Analysis":
         try:
             df = load_csv(uploaded_file)
             df = validate(df)
-            rows, comp = system.score(df, explain=False)
+            rows, comp = score_and_sync(system, df, source="streamlit:spatial")
 
             if "die_x" in rows.columns and "die_y" in rows.columns:
                 # Spatial scatter plot
@@ -235,7 +244,7 @@ elif page == "Survival Analysis":
         try:
             df = load_csv(uploaded_file)
             df = validate(df)
-            rows, comp = system.score(df, explain=False)
+            rows, comp = score_and_sync(system, df, source="streamlit:survival")
 
             if "survival_prob" in comp.columns:
                 # Histogram of survival probabilities
@@ -295,7 +304,7 @@ elif page == "Audit Log":
         from src.data import load_csv, validate
         df = load_csv(uploaded_file)
         df = validate(df)
-        rows, comp = system.score(df, explain=False)
+        rows, comp = score_and_sync(system, df, source="streamlit:audit")
 
         st.subheader("Component Decisions (Audit Trail)")
         audit_df = comp[[
@@ -320,3 +329,7 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("**System Info:**")
 st.sidebar.markdown(f"- Model: BurnInSystem v2.0")
 st.sidebar.markdown(f"- Status: ✅ Ready")
+st.sidebar.markdown("**Connected apps:**")
+st.sidebar.markdown("- Vite UI: http://localhost:5173")
+st.sidebar.markdown("- REST API: http://localhost:8000")
+st.sidebar.caption("Uploads here sync to reports/current_results.json for the Vite dashboard.")

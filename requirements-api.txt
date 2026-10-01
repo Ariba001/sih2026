@@ -1,0 +1,17 @@
+# Slim FastAPI runtime (no Streamlit / plotting UI).
+# CPU torch for Module-A VAE inference — needed to unpickle burnin_system.joblib.
+--extra-index-url https://download.pytorch.org/whl/cpu
+numpy
+pandas
+scipy
+scikit-learn
+joblib
+xgboost
+shap
+pyod
+lifelines
+torch
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic

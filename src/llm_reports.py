@@ -3,14 +3,26 @@
 Converts complex multi-modal signals (anomaly scores, drift predictions, spatial clusters,
 survival probabilities) into natural-language recommendations suitable for aerospace QA review.
 """
-import anthropic
+from __future__ import annotations
+
+import os
+
 import pandas as pd
+
+try:
+    import anthropic
+except ImportError:  # optional in slim API deploys
+    anthropic = None
 
 
 class LLMReportGenerator:
     """Generate natural-language reports using Claude Opus."""
 
     def __init__(self, model: str = "claude-opus-5-5"):
+        if anthropic is None:
+            raise RuntimeError("anthropic package is not installed")
+        if not os.getenv("ANTHROPIC_API_KEY"):
+            raise RuntimeError("ANTHROPIC_API_KEY is not set")
         self.client = anthropic.Anthropic()
         self.model = model
 

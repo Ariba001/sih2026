@@ -53,9 +53,12 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Documentation (except README.md)
+# Documentation (except README + deploy notes)
 *.md
 !README.md
+!README_SPACE.md
+!demo_video/**/*.md
+!docs/**/*.md
 
 # Models and data (optional, uncomment if needed)
 # *.joblib
@@ -66,3 +69,12 @@ reports/metrics.json
 reports/metrics.md
 reports/recall_overkill_curves.png
 reports/test_decisions.csv
+
+# BurnTestr runtime
+reports/current_results.json
+upload_out.json
+
+
+# Local tunnel binary
+cloudflared.exe
+
