@@ -6,8 +6,7 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 5173,
-    // Streamlit (8501) is the QA UI — it shares ML + reports/current_results.json
-    // with FastAPI. REST endpoints live on FastAPI (8000), not Streamlit.
+    // Local FastAPI. Production builds use VITE_API_URL (see .env.example).
     proxy: {
       '/api': 'http://127.0.0.1:8000',
       '/health': 'http://127.0.0.1:8000',

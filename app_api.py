@@ -1,6 +1,7 @@
 """BurnTestr FastAPI — scoring, CSV upload, and current-results dashboard APIs."""
 from __future__ import annotations
 
+import os
 from datetime import datetime, timezone
 from io import StringIO
 from pathlib import Path
@@ -12,7 +13,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from src.data import validate
-from src.llm_reports import LLMReportGenerator
 from src.results_store import (
     build_payload_from_comp,
     enrich_payload,
@@ -31,14 +31,24 @@ app = FastAPI(
     version="2.1",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+
+def _cors_origins() -> list[str]:
+    defaults = [
         "http://localhost:3000",
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
-    ],
+    ]
+    extra = os.getenv("CORS_ORIGINS", "").strip()
+    if not extra:
+        return defaults
+    return defaults + [o.strip() for o in extra.split(",") if o.strip()]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins(),
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -116,7 +126,13 @@ async def startup():
             print(f"[OK] BurnTestr model loaded from {MODEL_PATH}")
         else:
             print(f"[WARN] Model not found at {MODEL_PATH}")
-        llm_gen = LLMReportGenerator()
+        try:
+            from src.llm_reports import LLMReportGenerator
+
+            llm_gen = LLMReportGenerator()
+        except Exception as llm_err:
+            llm_gen = None
+            print(f"[WARN] LLM reports disabled: {llm_err}")
         # Seed dashboard current results from reports/test_decisions.csv when available
         ensure_seed_results(system)
         print("[OK] Current results ready")

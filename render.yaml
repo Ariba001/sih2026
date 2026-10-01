@@ -1,12 +1,18 @@
 services:
   - type: web
-    name: burntestr
-    runtime: python
+    name: burntestr-api
+    runtime: docker
     plan: free
     region: oregon
-    buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run app_streamlit_professional.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true
-    healthCheckPath: /_stcore/health
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: MKL_NUM_THREADS
+        value: "1"
+      - key: CORS_ORIGINS
+        sync: false
