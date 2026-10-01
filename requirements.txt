@@ -1,3 +1,6 @@
+# Slim deps for Streamlit Community Cloud / Render free (CPU).
+# Full stack extras live in requirements-full.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
 numpy
 pandas
 scipy
@@ -9,16 +12,6 @@ plotly
 matplotlib
 seaborn
 streamlit
-pytest
 pyod
-pysal
 lifelines
-anthropic
 torch
-fastapi
-uvicorn
-python-multipart
-pydantic
-sqlalchemy
-psycopg2-binary
-redis
