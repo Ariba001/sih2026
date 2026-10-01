@@ -119,10 +119,10 @@ class HealthResponse(BaseModel):
 async def startup():
     global system, llm_gen
     try:
-        import joblib
+        from src.model_loader import load_burnin_system
 
         if MODEL_PATH.exists():
-            system = joblib.load(MODEL_PATH)
+            system = load_burnin_system(MODEL_PATH)
             print(f"[OK] BurnTestr model loaded from {MODEL_PATH}")
         else:
             print(f"[WARN] Model not found at {MODEL_PATH}")

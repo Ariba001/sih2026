@@ -1,0 +1,14 @@
+# FastAPI on Render free (512MB) — no torch / no Streamlit.
+# VAE scores become zeros via src.model_loader torch-free stubs.
+numpy
+pandas
+scipy
+scikit-learn==1.9.0
+joblib
+xgboost
+pyod
+lifelines
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
