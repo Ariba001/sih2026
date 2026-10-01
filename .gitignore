@@ -71,3 +71,7 @@ reports/test_decisions.csv
 reports/current_results.json
 upload_out.json
 
+
+# Local tunnel binary
+cloudflared.exe
+
