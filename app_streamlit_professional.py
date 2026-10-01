@@ -252,6 +252,15 @@ def load_system():
         return joblib.load(model_path)
     return None
 
+
+def score_and_sync(system, df, *, source: str = "streamlit_pro", explain: bool = False):
+    """Score with the same BurnInSystem FastAPI uses; sync results for Vite dashboard."""
+    from src.results_store import persist_scored_results
+
+    rows, comp = system.score(df, explain=explain)
+    persist_scored_results(comp, df, source=source)
+    return rows, comp
+
 @st.cache_data
 def process_uploaded_file(uploaded_file):
     """Process uploaded CSV data."""
@@ -388,7 +397,7 @@ if page == "📊 Lot Overview":
     if df is not None:
         try:
             with st.spinner("🔄 Analyzing components..."):
-                rows, comp = system.score(df, explain=False)
+                rows, comp = score_and_sync(system, df, source="streamlit_pro:lot_overview")
 
             lot_ids = df["Lot_ID"].unique()
             if len(lot_ids) > 1:
@@ -588,7 +597,7 @@ elif page == "🔍 Component Detail":
         try:
             with st.spinner("🔄 Analyzing components..."):
                 df = process_uploaded_file(uploaded_file)
-                rows, comp = system.score(df, explain=True)
+                rows, comp = score_and_sync(system, df, source="streamlit_pro:detail", explain=True)
 
             comp_id = st.selectbox("Select Component ID", sorted(comp["Component_ID"].unique()))
 
@@ -712,7 +721,7 @@ elif page == "🗺️ Spatial Analysis":
         try:
             with st.spinner("🔄 Analyzing spatial patterns..."):
                 df = process_uploaded_file(uploaded_file)
-                rows, comp = system.score(df, explain=False)
+                rows, comp = score_and_sync(system, df, source="streamlit_pro:spatial")
 
             if "die_x" in rows.columns and "die_y" in rows.columns:
                 st.markdown("<div class='custom-card'>", unsafe_allow_html=True)
@@ -756,7 +765,7 @@ elif page == "⏱️ Survival Analysis":
         try:
             with st.spinner("🔄 Computing survival probabilities..."):
                 df = process_uploaded_file(uploaded_file)
-                rows, comp = system.score(df, explain=False)
+                rows, comp = score_and_sync(system, df, source="streamlit_pro:survival")
 
             if "survival_prob" in comp.columns:
                 # Risk summary
@@ -839,7 +848,7 @@ elif page == "📋 Audit Log":
         try:
             with st.spinner("🔄 Generating audit trail..."):
                 df = process_uploaded_file(uploaded_file)
-                rows, comp = system.score(df, explain=True)
+                rows, comp = score_and_sync(system, df, source="streamlit_pro:audit", explain=True)
 
             st.markdown("<div class='alert alert-info'><strong>MIL-STD-883 Compliant Documentation</strong><br>Complete decision history with timestamps, system version tracking, and traceability for certification records.</div>", unsafe_allow_html=True)
 

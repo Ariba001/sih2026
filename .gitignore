@@ -66,3 +66,8 @@ reports/metrics.json
 reports/metrics.md
 reports/recall_overkill_curves.png
 reports/test_decisions.csv
+
+# BurnTestr runtime
+reports/current_results.json
+upload_out.json
+
